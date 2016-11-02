@@ -2,6 +2,6 @@
 
 ## Collaborators
 
-@WhiteEyeDoll
-@smellmee
-@guyfrominterwebs
+* @WhiteEyeDoll
+* @smellmee
+* @guyfrominterwebs
