@@ -1,3 +1,7 @@
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "android-25"
+
 test:
   override:
     - cd ./EstimoteApp && ./gradlew assembleDebug
