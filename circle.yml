@@ -1,0 +1,8 @@
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "android-24"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.3"
+
+test:
+  override:
+    - cd ./EstimoteApp && ./gradlew assembleDebug
