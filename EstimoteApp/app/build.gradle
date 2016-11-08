@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "grp2.estimoteapp"
         minSdkVersion 23
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,4 +25,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+
+    //Dependencies related to the estimote
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    // add the following line, and replace "0.11.1" with the latest version
+    // of Estimote Android SDK; you'll find the latest version number on:
+    //   https://github.com/Estimote/Android-SDK/releases
+    compile 'com.estimote:sdk:0.13.0@aar'
 }
