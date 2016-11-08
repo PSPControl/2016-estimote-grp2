@@ -1,3 +1,4 @@
 test:
   override:
-    - ./EstimoteApp/gradlew assembleDebug
+    - cd ./EstimoteApp
+    - ./gradlew assembleDebug
