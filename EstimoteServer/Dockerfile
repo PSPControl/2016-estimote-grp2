@@ -1,6 +1,6 @@
-MAINTAINER Pauli Huttunen
-
 FROM ubuntu:16.04
+
+MAINTAINER Pauli Huttunen
 
 # Add MariaDB repository
 RUN apt-get install software-properties-common \
