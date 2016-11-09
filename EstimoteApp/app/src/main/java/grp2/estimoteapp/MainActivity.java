@@ -2,6 +2,7 @@ package grp2.estimoteapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import com.estimote.sdk.DeviceId;
 import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.telemetry.EstimoteTelemetry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -19,12 +21,14 @@ public class MainActivity extends Activity {
     private String scanId;
     private DeviceId beaconId;
     private boolean newBeacon = true;
+    private String textToPrint = "";
+
     public double temperature;
     public double brightness;
     public double pressure;
 
-
-    private Beacon beacons[];
+    private ArrayList<Beacon> beacons = new ArrayList<Beacon>();
+    //private Beacon beacons[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,26 +49,27 @@ public class MainActivity extends Activity {
             @Override
             public void onTelemetriesFound(List<EstimoteTelemetry> telemetries) {
                 for (EstimoteTelemetry tlm : telemetries) {
-
                     //THIS WORKS
                     //Gets data from the device
                     temperature = tlm.temperature;
                     brightness = tlm.ambientLight;
                     beaconId = tlm.deviceId;
                     pressure = tlm.pressure;
+                    newBeacon = true;
 
-                    printText.setText("\n beaconID: " + beaconId +
+                    /*printText.setText("\n beaconID: " + beaconId +
                             ", temperature: " + temperature + " °C" +
                             ", light: " + brightness + " lux" +
-                            ", pressure " + pressure + " ?");
+                            ", pressure " + pressure + " ?");*/
+
                     //This first for doesnt work, couldnt test the other code below because of this
-                   /* if(beacons.length > 0) {
-                        for (int i = 0; i < beacons.length; i++) {
-                            if (beaconId == beacons[i].beaconId) {
+                    if(beacons.size() > 0) {
+                        for (int i = 0; i < beacons.size(); i++) {
+                            if (beaconId == beacons.get(i).beaconId) {
                                 newBeacon = false;
-                                beacons[i].temperature = temperature;
-                                beacons[i].brightness = brightness;
-                                beacons[i].pressure = pressure;
+                                beacons.get(i).temperature = temperature;
+                                beacons.get(i).brightness = brightness;
+                                beacons.get(i).pressure = pressure;
                             }
                         }
                     }
@@ -73,16 +78,16 @@ public class MainActivity extends Activity {
                         b.brightness = brightness;
                         b.pressure = pressure;
                         b.temperature = temperature;
-                        beacons[beacons.length] = b;
+                        beacons.add(b);
                     }
-                    printText.setText("");
-                    for(int i = 0; i < beacons.length;i++){
-                        if(beaconId == beacons[i].beaconId){
-                            printText.append("\n beaconID: " + beacons[i].beaconId +
-                                    ", temperature: " + beacons[i].temperature + " °C" +
-                                    ", light: " + beacons[i].brightness + " lux");
-                        }
-                    }*/
+                    textToPrint = "empty";
+                    for(int i = 0; i < beacons.size();i++){
+                        textToPrint += "\n beaconID: " + beacons.get(i).beaconId +
+                                ", temperature: " + beacons.get(i).temperature + " °C" +
+                                ", light: " + beacons.get(i).brightness + " lux";
+
+                    }
+                    printText.setText(textToPrint);
 
                 }
             }
