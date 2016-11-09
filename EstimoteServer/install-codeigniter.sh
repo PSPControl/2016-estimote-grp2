@@ -7,18 +7,20 @@ INSTALL_DIR="/var/www/html"
 INSTALL_NAME="codeigniter"
 
 install() {
-    cd $INSTALL_DIR
+    cd /tmp
 
     echo "Downloading CodeIgniter source archive..."
-    wget -O codeignite.zip $SOURCE_URL
+    wget -O codeigniter.zip $SOURCE_URL
 
     echo "Extracting source files from archive..."
-    unzip codeigniter.zip -d ./$INSTALL_NAME
+    unzip codeigniter.zip
+
+    echo "Installing package files..."
 
     echo "Deleting source archive..."
     rm codeigniter.zip
 
-    echo "Installation complete"
+    echo "CodeIgniter installation complete"
 }
 
 help() {
