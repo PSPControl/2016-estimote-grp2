@@ -1,18 +1,21 @@
 FROM ubuntu:16.04
 
-MAINTAINER Pauli Huttunen
+MAINTAINER Pauli Huttunen <pauli.k.huttunen@gmail.com>
 
+ARG CI_VERSION="3.1.2"
+
+ARG MARIADB_VERSION="10.1"
 ARG MARIADB_PASSWORD="unused"
 
 # Add MariaDB repository
 RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
 	echo "# http://downloads.mariadb.org/mariadb/repositories/\n\
-		deb [arch=amd64,i386] http://mirror.netinch.com/pub/mariadb/repo/10.1/ubuntu xenial main\n\
-		deb-src http://mirror.netinch.com/pub/mariadb/repo/10.1/ubuntu xenial main" > /etc/apt/sources.list.d/MariaDB.list
+		deb [arch=amd64,i386] http://mirror.netinch.com/pub/mariadb/repo/$MARIADB_VERSION/ubuntu xenial main\n\
+		deb-src http://mirror.netinch.com/pub/mariadb/repo/$MARIADB_VERSION/ubuntu xenial main" > /etc/apt/sources.list.d/MariaDB.list
 
 RUN { \
-		echo mariadb-server-10.1 mysql-server/root_password password $MARIADB_PASSWORD; \
-		echo mariadb-server-10.1 mysql-server/root_password_again password $MARIADB_PASSWORD; \
+		echo mariadb-server-$MARIADB_VERSION mysql-server/root_password password $MARIADB_PASSWORD; \
+		echo mariadb-server-$MARIADB_VERSION mysql-server/root_password_again password $MARIADB_PASSWORD; \
 	} | debconf-set-selections
 
 # Update the container
@@ -34,5 +37,5 @@ RUN apt-get install -y \
 RUN rm /var/www/html/index.html
 
 # Install CodeIgniter
-ADD ./codeigniter-install.sh /usr/bin/
-RUN /usr/bin/codeigniter-install.sh
+ADD ./codeigniter-install.sh /usr/bin/codeigniter-install
+RUN codeigniter-install -v $CI_VERSION

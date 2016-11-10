@@ -53,7 +53,7 @@ help() {
     echo ""
 }
 
-while getopts "w:h" opt; do
+while getopts "w:v:h" opt; do
     case $opt in
         h)
             help
@@ -61,6 +61,9 @@ while getopts "w:h" opt; do
             ;;
         w)
             WEB_DIR="$OPTARG"
+            ;;
+        v)
+            CI_VERSION="$OPTARG"
             ;;
         \?)
             echo "Invalid option: -$OPTARG"
