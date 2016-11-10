@@ -5,8 +5,9 @@ WEB_DIR="/var/www/html"
 CI_VERSION="3.1.2"
 CI_SOURCE_URL="https://github.com/bcit-ci/CodeIgniter/archive/$CI_VERSION.zip"
 
-CI_LIB_DIR="/usr/lib/codeigniter"
-CI_APP_DIR="/usr/bin/codeigniter/applications"
+CI_ROOT_DIR="/usr/local/share/codeigniter"
+CI_SYSTEM_DIR="$CI_ROOT_DIR/system"
+CI_APP_DIR="$CI_ROOT_DIR/applications"
 
 install() {
     mkdir /tmp/codeigniter
@@ -16,28 +17,31 @@ install() {
     wget $CI_SOURCE_URL
 
     echo "Creating directory structure..."
-    mkdir -p $CI_LIB_DIR
-    mkdir -p $CI_APP_DIR
+    mkdir -p $CI_ROOT_DIR
+    mkdir $CI_SYSTEM_DIR
+    mkdir $CI_APP_DIR
 
     echo "Extracting source archive..."
     unzip -q $CI_VERSION.zip
 
     echo "Removing unnecessary files..."
     find CodeIgniter-$CI_VERSION/system -type f -name "index.html" -exec rm {} \;
+    find CodeIgniter-$CI_VERSION/system -type f -name ".htaccess" -exec rm {} \;
 
     echo "Installing CodeIgniter system files..."
-    mv CodeIgniter-$CI_VERSION/system $CI_LIB_DIR/system
+    mv CodeIgniter-$CI_VERSION/system $CI_SYSTEM_DIR
 
     echo "Installing web resource files..."
     mv CodeIgniter-$CI_VERSION/index.php $WEB_DIR/index.php
 
     echo "Setting CodeIgniter system path..."
-    sed -i -e "s#\$system_path = 'system';#\$system_path = '$CI_LIB_DIR/system';#" $WEB_DIR/index.php
+    sed -i -e "s#\$system_path = 'system';#\$system_path = '$CI_SYSTEM_DIR';#" $WEB_DIR/index.php
 
     echo "Setting CodeIgniter applications path..."
     sed -i -e "s#\$application_folder = 'application';#\$application_folder = '$CI_APP_DIR';#" $WEB_DIR/index.php
 
-    echo "Deleting source temporary files..."
+    echo "Deleting temporary files..."
+    cd /tmp
     rm -rf /tmp/codeigniter
 
     echo "CodeIgniter installation complete"
@@ -79,3 +83,4 @@ while getopts "w:v:h" opt; do
 done
 
 install
+exit 0
