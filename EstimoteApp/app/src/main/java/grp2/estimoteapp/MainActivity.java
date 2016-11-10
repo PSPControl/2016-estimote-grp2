@@ -1,9 +1,11 @@
 package grp2.estimoteapp;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.util.Log;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.estimote.sdk.Beacon;
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class MainActivity extends Activity {
 
     TextView printText;
+    RelativeLayout background;
     private BeaconManager beaconManager;
     private Region region;
     private String scanId;
@@ -40,20 +43,21 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         printText = (TextView) findViewById(R.id.printText);
-
+        background = (RelativeLayout) findViewById(R.id.activity_main);
         beaconManager = new BeaconManager(getApplicationContext());
         region = new Region("ranged region", UUID.fromString ("A9407F30-F5F8-466E-AFF9-25556B57FE6D"), null, null);
 
         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
             @Override
             public void onBeaconsDiscovered(Region region, List list) {
+                //Checks what beacon is the closest and does something with it
                 if (!list.isEmpty() && list.get (0) instanceof Beacon) {
                     doSomethingWith((Beacon)list.get(0));
                 }
             }
         });
 
-        //Telemetry reading we supposedly don't need it
+        //TELEMETRY READING WE SUPPOSEDLY DON'T NEED
         /*beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
@@ -111,12 +115,9 @@ public class MainActivity extends Activity {
 
     public void doSomethingWith(Beacon beacon){
         //Does something depending with what beacon is the nearest
-        printText.setText(beacon.toString());
+        printText.setText("Closest beacon is beacon with mac address " + beacon.getMacAddress().toString());
     }
 
-    public void setText(String text){
-        printText.setText(text);
-    }
     @Override
     protected void onResume() {
         super.onResume();

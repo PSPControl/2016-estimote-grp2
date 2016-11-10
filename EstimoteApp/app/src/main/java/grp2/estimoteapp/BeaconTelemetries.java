@@ -7,6 +7,7 @@ import com.estimote.sdk.DeviceId;
  */
 
 public class BeaconTelemetries {
+    //This class is used to store telemetry data for each beacon
 
     public DeviceId beaconId;
     public double temperature;
