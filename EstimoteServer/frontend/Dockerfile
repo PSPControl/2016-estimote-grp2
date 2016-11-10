@@ -6,17 +6,17 @@ MAINTAINER Pauli Huttunen <pauli.k.huttunen@gmail.com>
 
 # Get updates
 RUN apt-get update && apt-get full-upgrade -y \
-# Install packages
+    # Install packages
     && apt-get install -y \
-# Utilities
+    # Utilities
     curl \
-# Apache and PHP \
+    # Apache and PHP \
     apache2 \
     php \
     libapache2-mod-php \
     php-mcrypt \
     php-mysql \
-# Remove default apache index file
+    # Remove default apache index file
     && rm /var/www/html/index.html
 
 # Install CodeIgniter
@@ -51,6 +51,7 @@ RUN mkdir -p /usr/local/src/codeigniter \
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
 
-EXPOSE 80
-
 # Install EstimoteServer frontend application
+
+
+EXPOSE 80
