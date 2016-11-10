@@ -37,7 +37,7 @@ RUN mkdir -p /usr/local/src/codeigniter \
 
     # Install system files
     && mkdir -p /usr/local/share/codeigniter/ \
-    && mv /usr/local/share/codeigniter/CodeIgniter-$CI_VERSION/system /usr/local/share/codeigniter/ \
+    && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/system /usr/local/share/codeigniter/ \
 
     # Create application directory
     && mkdir /usr/local/share/codeigniter/application \
