@@ -3,18 +3,16 @@ FROM ubuntu:16.04
 MAINTAINER Pauli Huttunen
 
 ARG MARIADB_PASSWORD="unused"
-ENV MARIADB_MAJOR "10.1"
 
 # Add MariaDB repository
-RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-
-RUN echo "# http://downloads.mariadb.org/mariadb/repositories/\n\
-deb [arch=amd64,i386] http://mirror.netinch.com/pub/mariadb/repo/10.1/ubuntu xenial main\n\
-deb-src http://mirror.netinch.com/pub/mariadb/repo/10.1/ubuntu xenial main" > /etc/apt/sources.list.d/MariaDB.list
+RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
+	echo "# http://downloads.mariadb.org/mariadb/repositories/\n\
+		deb [arch=amd64,i386] http://mirror.netinch.com/pub/mariadb/repo/10.1/ubuntu xenial main\n\
+		deb-src http://mirror.netinch.com/pub/mariadb/repo/10.1/ubuntu xenial main" > /etc/apt/sources.list.d/MariaDB.list
 
 RUN { \
-		echo mariadb-server-$MARIADB_MAJOR mysql-server/root_password password $MARIADB_PASSWORD; \
-		echo mariadb-server-$MARIADB_MAJOR mysql-server/root_password_again password $MARIADB_PASSWORD; \
+		echo mariadb-server-10.1 mysql-server/root_password password $MARIADB_PASSWORD; \
+		echo mariadb-server-10.1 mysql-server/root_password_again password $MARIADB_PASSWORD; \
 	} | debconf-set-selections
 
 # Update the container
@@ -32,6 +30,9 @@ RUN apt-get install -y \
     mariadb-server \
     php libapache2-mod-php php-mcrypt php-mysql
 
+# Remove default apache index file
+RUN rm /var/www/html/index.html
+
 # Install CodeIgniter
-ADD ./install-codeigniter.sh /usr/bin/
-RUN /usr/bin/install-codeigniter.sh
+ADD ./codeigniter-install.sh /usr/bin/
+RUN /usr/bin/codeigniter-install.sh
