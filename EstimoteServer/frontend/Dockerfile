@@ -29,7 +29,7 @@ RUN mkdir -p /usr/local/src/codeigniter \
     | tar -xzC /usr/local/src/codeigniter \
 
     # Web entrypoint
-    && mv /usr/local/src/codeigniter/CodeIgniter_$CI_VERSION/index.php /var/www/html/ \
+    && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/index.php /var/www/html/ \
 
     # Remove unnecessary web files
     && find /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/system -type f -name "index.html" -exec rm {} \; \
