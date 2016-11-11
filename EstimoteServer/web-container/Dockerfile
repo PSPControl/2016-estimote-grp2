@@ -51,7 +51,9 @@ RUN mkdir -p /usr/local/src/codeigniter \
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
 
-# Install EstimoteServer frontend application
+# Install EstimoteServer web application and assets
+COPY ./src/application /usr/local/share/codeigniter/
+COPY ./src/assets /var/www/html/
 
-
+# Expose http port
 EXPOSE 80
