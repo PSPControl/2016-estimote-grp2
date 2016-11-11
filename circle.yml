@@ -13,11 +13,11 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter "android-24"
     - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.3"
 
-    # Build EstimoteServer backend
-    - cd EstimoteServer/backend && docker build --rm=false -t 2016-estimote-gpr2/estimoteserver-be .
+    # Build EstimoteServer db container
+    - cd ./EstimoteServer/db-container && docker build --rm=false -t 2016-estimote-gpr2/estimoteserver-db .
 
-    # Build EstimoteServer frontend
-    - cd EstimoteServer/frontend && docker build --rm=false -t 2016-estimote-gpr2/estimoteserver-fe .
+    # Build EstimoteServer web container
+    - cd ./EstimoteServer/web-container && docker build --rm=false -t 2016-estimote-gpr2/estimoteserver-web .
 
 test:
   override:
