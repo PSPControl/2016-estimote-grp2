@@ -55,5 +55,11 @@ RUN mkdir -p /usr/local/src/codeigniter \
 COPY ./src/application /usr/local/share/codeigniter/
 COPY ./src/assets /var/www/html/
 
+# Add entrypoint script
+COPY ./docker-entrypoint.sh /
+
+# Set entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
 # Expose http port
 EXPOSE 80
