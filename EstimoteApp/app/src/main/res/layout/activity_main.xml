@@ -15,4 +15,12 @@
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:id="@+id/printText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World2!"
+        android:id="@+id/telemetryText"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
