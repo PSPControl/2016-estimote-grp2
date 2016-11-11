@@ -1,0 +1,25 @@
+general:
+  branches:
+    ignore:
+      - gh-pages
+
+machine:
+    services:
+        - docker
+
+dependencies:
+  pre:
+    # Install android sdk packages and accept lisences
+    - echo y | android update sdk --no-ui --all --filter "android-24"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.3"
+
+    # Build EstimoteServer backend
+    - cd EstimoteServer/backend && docker build --rm=false -t 2016-estimote-gpr2/estimoteserver-be .
+
+    # Build EstimoteServer frontend
+    - cd EstimoteServer/frontend && docker build --rm=false -t 2016-estimote-gpr2/estimoteserver-fe .
+
+test:
+  override:
+    # Build EstimoteApp debug build
+    - cd ./EstimoteApp && ./gradlew assembleDebug
