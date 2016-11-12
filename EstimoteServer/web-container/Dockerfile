@@ -33,12 +33,15 @@ RUN mkdir -p /usr/local/src/codeigniter \
     # Set CodeIgniter application directory path
     && sed -i -e "s#\$application_folder = 'application';#\$application_folder = '/usr/local/share/codeigniter/application';#" /var/www/html/index.php \
 
+    # Log directory
+    && mkdir /usr/local/share/codeigniter/application/logs \
+    && chown www-data:www-data /usr/local/share/codeigniter/application/logs \
+
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
-    
+
 # Install EstimoteServer web application and assets
-COPY ./src/application /usr/local/share/codeigniter/application
-COPY ./src/assets /var/www/html/assets
+COPY ./src /usr/local/share/codeigniter
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
