@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 declare -A dbconfig=( \
 [host]="$DB_HOST" \
@@ -17,7 +18,18 @@ for i in ${!dbconfig[@]}; do
 done
 
 for i in ${!dbconfig[@]}; do
-    sed -i -e "s/^'${!dbconfig[$i]}' => '.*'$/^'${!dbconfig[$i]}' => '${dbconfig[$i]}'$/" /usr/local/share/codeigniter/application/config/database.php
+    sed -i -e "s/^'${!dbconfig[$i]}' => '[.*]'$/^'${!dbconfig[$i]}' => '${dbconfig[$i]}'$/" /usr/local/share/codeigniter/application/config/database.php
 done
 
-exec apache2 -DFOREGROUND
+# From php:7.0-apache
+
+: "${APACHE_CONFDIR:=/etc/apache2}"
+: "${APACHE_ENVVARS:=$APACHE_CONFDIR/envvars}"
+if test -f "$APACHE_ENVVARS"; then
+	. "$APACHE_ENVVARS"
+fi
+
+: "${APACHE_PID_FILE:=${APACHE_RUN_DIR:=/var/run/apache2}/apache2.pid}"
+rm -f "$APACHE_PID_FILE"
+
+exec apache2 -DFOREGROUND "$@"
