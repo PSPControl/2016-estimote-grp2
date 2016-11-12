@@ -1,23 +1,8 @@
-FROM ubuntu:16.04
+FROM php:7-apache
 
 MAINTAINER Pauli Huttunen <pauli.k.huttunen@gmail.com>
 
 # EstimoteServer frontend container
-
-# Get updates
-RUN apt-get update && apt-get full-upgrade -y \
-    # Install packages
-    && apt-get install -y \
-    # Utilities
-    curl \
-    # Apache and PHP \
-    apache2 \
-    php \
-    libapache2-mod-php \
-    php-mcrypt \
-    php-mysql \
-    # Remove default apache index file
-    && rm /var/www/html/index.html
 
 # Install CodeIgniter
 ARG CI_VERSION="3.1.2"
@@ -28,7 +13,7 @@ RUN mkdir -p /usr/local/src/codeigniter \
     && curl -SL https://github.com/bcit-ci/CodeIgniter/archive/$CI_VERSION.tar.gz \
     | tar -xzC /usr/local/src/codeigniter \
 
-    # Web entrypoint
+    # Application entrypoint
     && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/index.php /var/www/html/ \
 
     # Remove unnecessary web files
@@ -48,12 +33,17 @@ RUN mkdir -p /usr/local/src/codeigniter \
     # Set CodeIgniter application directory path
     && sed -i -e "s#\$application_folder = 'application';#\$application_folder = '/usr/local/share/codeigniter/application';#" /var/www/html/index.php \
 
+    # Log directory
+    && mkdir /usr/local/share/codeigniter/application/logs \
+    && chown www-data:www-data /usr/local/share/codeigniter/application/logs \
+
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
 
 # Install EstimoteServer web application and assets
-COPY ./src/application /usr/local/share/codeigniter/
-COPY ./src/assets /var/www/html/
+COPY ./src /usr/local/share/codeigniter
 
-# Expose http port
+COPY docker-entrypoint.sh /usr/local/bin/
+
 EXPOSE 80
+CMD ["docker-entrypoint.sh"]

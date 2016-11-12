@@ -75,11 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mysql:dbname=estimote;host=localhost',
+	'hostname' => 'localhost',
+	'database' => 'estimoteserver',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'estimote',
-	'dbdriver' => 'pdo',
+	'dbdriver' => 'mysql',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
