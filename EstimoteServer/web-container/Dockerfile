@@ -4,13 +4,9 @@ MAINTAINER Pauli Huttunen <pauli.k.huttunen@gmail.com>
 
 # EstimoteServer frontend container
 
-# Get updates
 RUN apt-get update && apt-get full-upgrade -y \
-    # Install packages
-    && apt-get install -y \
-    # Utilities
-    curl \
-    # Apache and PHP \
+    # Install Apache and PHP
+    && apt-get install -y --no-install-recommends \
     apache2 \
     php \
     libapache2-mod-php \
@@ -22,13 +18,15 @@ RUN apt-get update && apt-get full-upgrade -y \
 # Install CodeIgniter
 ARG CI_VERSION="3.1.2"
 
-RUN mkdir -p /usr/local/src/codeigniter \
+RUN apt-get install -y --no-install-recommends curl \
+
+    && mkdir -p /usr/local/src/codeigniter \
 
     # Get sources
     && curl -SL https://github.com/bcit-ci/CodeIgniter/archive/$CI_VERSION.tar.gz \
     | tar -xzC /usr/local/src/codeigniter \
 
-    # Web entrypoint
+    # Application entrypoint
     && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/index.php /var/www/html/ \
 
     # Remove unnecessary web files
@@ -49,7 +47,10 @@ RUN mkdir -p /usr/local/src/codeigniter \
     && sed -i -e "s#\$application_folder = 'application';#\$application_folder = '/usr/local/share/codeigniter/application';#" /var/www/html/index.php \
 
     # Remove unneeded source files
-    && rm -rf /usr/local/src/codeigniter
+    && rm -rf /usr/local/src/codeigniter \
+
+    # Purge curl
+    && apt-get purge -y --auto-remove curl
 
 # Install EstimoteServer web application and assets
 COPY ./src/application /usr/local/share/codeigniter/
