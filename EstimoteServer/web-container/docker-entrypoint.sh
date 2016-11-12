@@ -1,16 +1,23 @@
 #!/bin/bash
 
-if [ -z "$ESTIMOTESERVER_DB_HOST" ]; then
-    echo >&2 "error: ESTIMOTESERVER_DB_USER needs to be specified"
-    exit 1
-fi
+declare -A dbconfig=( \
+[host]="$DB_HOST" \
+[name]="$DB_NAME" \
+[user]="$DB_USER" \
+[password]="$DB_PASSWORD" \
+)
 
-if [ -z "$ESTIMOTESERVER_DB_USER" ]; then
-    echo >&2 "error: ESTIMOTESERVER_DB_USER needs to be specified"
-    exit 1
-fi
+# Check for unconfigured values
+for i in ${!dbconfig[@]}; do
+    if [ -z "${dbconfig[$i]}" ]; then
+        echo >&2 "error: database $i was not given"
+        echo >&2 "set environment variable DB_${i^^} to configure database $i"
+        exit 1
+    fi
+done
 
-if [ -z "$ESTIMOTESERVER_DB_PASSWORD" ]; then
-    echo >&2 "error: ESTIMOTESERVER_DB_PASSWORD needs to be specified"
-    exit 1
-fi
+for i in ${!dbconfig[@]}; do
+    sed -i -e "s/^'${!dbconfig[$i]}' => '.*'$/^'${!dbconfig[$i]}' => '${dbconfig[$i]}'$/" /usr/local/share/codeigniter/application/config/database.php
+done
+
+exec apache2 -DFOREGROUND

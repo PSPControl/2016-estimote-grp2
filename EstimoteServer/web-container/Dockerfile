@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM httpd:2.4
 
 MAINTAINER Pauli Huttunen <pauli.k.huttunen@gmail.com>
 
