@@ -13,6 +13,7 @@ public class BeaconTelemetries {
     public double temperature;
     public double brightness;
     public double pressure;
+    public int distance;
 
     BeaconTelemetries(DeviceId id){
         this.beaconId = id;
