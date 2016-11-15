@@ -2,17 +2,16 @@
 set -e
 
 declare -A dbconfig=( \
-[hostname]="$DB_HOST" \
-[database]="$DB_NAME" \
-[username]="$DB_USER" \
+[hostname]="$DB_HOSTNAME" \
+[database]="$DB_DATABASE" \
+[username]="$DB_USERNAME" \
 [password]="$DB_PASSWORD" \
 )
 
 # Check for unconfigured values
 for i in ${!dbconfig[@]}; do
     if [ -z "${dbconfig[$i]}" ]; then
-        echo >&2 "error: database.php setting value $i was not given"
-        echo >&2 "set environment variable DB_${i^^} to configure database $i"
+        echo >&2 "error: database.php setting $i was not given, set environment variable DB_${$i^^} to configure it."
         exit 1
     fi
 done
