@@ -3,7 +3,7 @@
 set -e
 
 # Get database config from docker run environment variables
-declare -A dbconfig=( \
+declare -A dbConfig=( \
 [hostname]="$DB_HOSTNAME" \
 [database]="$DB_DATABASE" \
 [username]="$DB_USERNAME" \
@@ -11,8 +11,8 @@ declare -A dbconfig=( \
 )
 
 # Check for empty database config values
-for i in ${!dbconfig[@]}; do
-    if [ -z "${dbconfig[$i]}" ]; then
+for i in ${!dbConfig[@]}; do
+    if [ -z "${dbConfig[$i]}" ]; then
         echo >&2 "error: database.php setting $i was not given, set environment variable DB_${i^^} to configure it."
         FAILED_CONFIG=true
     fi
@@ -23,8 +23,8 @@ if [ $FAILED_CONFIG ]; then
 fi
 
 # Apply settings to application/config/database.php
-for i in ${!dbconfig[@]}; do
-    sed -i "s/'"$i"' => '.*'/'"$i"' => '"${dbconfig[$i]}"'/" /usr/local/share/codeigniter/application/config/database.php
+for i in ${!dbConfig[@]}; do
+    sed -i "s/'"$i"' => '.*'/'"$i"' => '"${dbConfig[$i]}"'/" /usr/local/share/codeigniter/application/config/database.php
 done
 
 # From here same as php:7-apache
