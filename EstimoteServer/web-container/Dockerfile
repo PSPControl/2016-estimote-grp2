@@ -37,19 +37,23 @@ RUN mkdir -p /usr/local/src/codeigniter \
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
 
-# Install jQuery
-RUN mkdir -p /var/www/html/assets/ext \
-    && cd /var/www/html/assets/ext \
-    && curl -SL -o jquery.js https://code.jquery.com/jquery-3.1.1.slim.min.js
-
 # Install EstimoteServer application
 COPY ./src/application /usr/local/share/codeigniter/application
 
 # Install webui
-COPY ./src/html/webui /var/www/html/webui
+COPY ./src/webui /var/www/html/webui
+
+# Install assets
+COPY ./src/assets /var/www/html/assets
+
+# Install jQuery
+RUN curl -SL --create-dirs -o /var/www/html/assets/ext/jquery.js https://code.jquery.com/jquery-3.1.1.slim.min.js
 
 # Install entrypoint script
-COPY docker-entrypoint.sh /usr/local/bin
+COPY ./container-init.sh /usr/local/bin/
+
+WORKDIR /var/www/html
 
 EXPOSE 80
-ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["container-init.sh"]
