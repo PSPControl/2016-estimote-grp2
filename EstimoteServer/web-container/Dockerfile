@@ -48,8 +48,8 @@ RUN mkdir -p /var/www/html/assets/ext \
 # Install EstimoteServer web application
 COPY ./src/application /usr/local/share/codeigniter
 
-# Install public web resources
-COPY ./src/html /var/www
+# Install webui
+COPY ./src/html/webui /var/www/html
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
