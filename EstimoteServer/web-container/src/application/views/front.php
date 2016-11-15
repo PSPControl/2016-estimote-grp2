@@ -16,7 +16,7 @@
 	<div class="switchButton">
 	Play/Pause
 	</div>
-	<script src="assets/ext/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script type="text/javascript">
 			var bg1 = "#FF0012"; //document.body.style.background
 			var bg2 = "#000000";
@@ -31,7 +31,7 @@
 					dataType: "JSON",
 					success: function(response){
 						console.log (response);
-						var audio = "assets/audio/"; 
+						var audio = "assets/audio/";
 						var song = response ['song'];
 						var src = $ ('<source/>', {
 							id: "audiosrc",
@@ -55,7 +55,7 @@
 			$(document).ready(function(){
 				$ ('.switchButton').on ('click', playpause);
 				setInterval(getData, refreshRate);
-			});	
+			});
 		</script>
 	</body>
 </html>

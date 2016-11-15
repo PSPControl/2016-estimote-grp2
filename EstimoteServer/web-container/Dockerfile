@@ -46,9 +46,6 @@ COPY ./src/webui /var/www/html/webui
 # Install assets
 COPY ./src/assets /var/www/html/assets
 
-# Install jQuery
-RUN curl -SL --create-dirs -o /var/www/html/assets/ext/jquery.js https://code.jquery.com/jquery-3.1.1.slim.min.js
-
 # Install entrypoint script
 COPY ./container-init.sh /usr/local/bin/
 
