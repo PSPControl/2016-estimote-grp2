@@ -1,13 +1,18 @@
 <?php
-	$tempData = "Temperature data goes here";
-	$coords = "Co-ordinates go here";
+	/*
+		
+	*/
+	$temperature = "Temperature data goes here";
+	$pressure = "Pressure data goes here";
+	$brightness = "Brightness data goes here";
 	$UUID = "UUID goes here";
 ?>
 
 <html>
 	<pre>
-	Lämpötila: <?php echo $tempData . "\n"; ?>
 	UUID: <?php echo $UUID . "\n"; ?>
-	Koordinaatit: <?php echo $coords . "\n"; ?>
+	Temperature: <?php echo $temperature . "\n"; ?>
+	Pressure: <?php echo $pressure . "\n"; ?>
+	Brightness: <?php echo $brightness . "\n"; ?>
 	</pre>
 </html>
