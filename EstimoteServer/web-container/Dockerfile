@@ -13,7 +13,7 @@ RUN mkdir -p /usr/local/src/codeigniter \
     && curl -SL https://github.com/bcit-ci/CodeIgniter/archive/$CI_VERSION.tar.gz \
     | tar -xzC /usr/local/src/codeigniter \
 
-    # Application entrypoint
+    # index.php
     && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/index.php /var/www/html/ \
 
     # Remove unnecessary web files
@@ -22,20 +22,17 @@ RUN mkdir -p /usr/local/src/codeigniter \
 
     # Install system files
     && mkdir -p /usr/local/share/codeigniter/ \
-    && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/system /usr/local/share/codeigniter/ \
+    && mv /usr/local/src/codeigniter/CodeIgniter-$CI_VERSION/system /usr/local/share/codeigniter/system \
 
-    # Create application directory
-    && mkdir /usr/local/share/codeigniter/application \
+    # Application and log directory
+    && mkdir -p /usr/local/share/codeigniter/application/logs \
+    && chown www-data:www-data /usr/local/share/codeigniter/application/logs \
 
     # Set CodeIgniter system directory path
     && sed -i -e "s#\$system_path = 'system';#\$system_path = '/usr/local/share/codeigniter/system';#" /var/www/html/index.php \
 
     # Set CodeIgniter application directory path
     && sed -i -e "s#\$application_folder = 'application';#\$application_folder = '/usr/local/share/codeigniter/application';#" /var/www/html/index.php \
-
-    # Log directory
-    && mkdir /usr/local/share/codeigniter/application/logs \
-    && chown www-data:www-data /usr/local/share/codeigniter/application/logs \
 
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
@@ -45,13 +42,14 @@ RUN mkdir -p /var/www/html/assets/ext \
     && cd /var/www/html/assets/ext \
     && curl -SL -o jquery.js https://code.jquery.com/jquery-3.1.1.slim.min.js
 
-# Install EstimoteServer web application
-COPY ./src/application /usr/local/share/codeigniter
+# Install EstimoteServer application
+COPY ./src/application /usr/local/share/codeigniter/application
 
-# Install public web resources
-COPY ./src/html /var/www
+# Install webui
+COPY ./src/html/webui /var/www/html/webui
 
-COPY docker-entrypoint.sh /usr/local/bin/
+# Install entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin
 
 EXPOSE 80
-CMD ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
