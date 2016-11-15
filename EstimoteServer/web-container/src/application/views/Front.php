@@ -9,7 +9,7 @@
 <body>
 
 
-<script type="text/javascript" src="../assets/ext/jquery.js"></script>
+<script type="text/javascript" src="/assets/ext/jquery.js"></script>
 <script type="text/javascript">
 	$.ajax({
 	   url: 'api/songs',
