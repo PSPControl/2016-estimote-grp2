@@ -11,7 +11,7 @@ declare -A dbconfig=( \
 # Check for unconfigured values
 for i in ${!dbconfig[@]}; do
     if [ -z "${dbconfig[$i]}" ]; then
-        echo >&2 "error: database.php setting $i was not given, set environment variable DB_${$i^^} to configure it."
+        echo >&2 "error: database.php setting $i was not given, set environment variable DB_${i^^} to configure it."
         exit 1
     fi
 done
