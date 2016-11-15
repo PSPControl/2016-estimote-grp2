@@ -40,8 +40,16 @@ RUN mkdir -p /usr/local/src/codeigniter \
     # Remove unneeded source files
     && rm -rf /usr/local/src/codeigniter
 
-# Install EstimoteServer web application and assets
-COPY ./src /usr/local/share/codeigniter
+# Install jQuery
+RUN mkdir -p /var/www/html/assets/ext \
+    && cd /var/www/html/assets/ext \
+    && curl -SL -o jquery.js https://code.jquery.com/jquery-3.1.1.slim.min.js
+
+# Install EstimoteServer web application
+COPY ./src/application /usr/local/share/codeigniter
+
+# Install public web resources
+COPY ./src/html /var/www
 
 COPY docker-entrypoint.sh /usr/local/bin/
 

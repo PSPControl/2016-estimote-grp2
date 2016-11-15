@@ -2,23 +2,22 @@
 set -e
 
 declare -A dbconfig=( \
-[host]="$DB_HOST" \
-[name]="$DB_NAME" \
-[user]="$DB_USER" \
+[hostname]="$DB_HOSTNAME" \
+[database]="$DB_DATABASE" \
+[username]="$DB_USERNAME" \
 [password]="$DB_PASSWORD" \
 )
 
 # Check for unconfigured values
 for i in ${!dbconfig[@]}; do
     if [ -z "${dbconfig[$i]}" ]; then
-        echo >&2 "error: database $i was not given"
-        echo >&2 "set environment variable DB_${i^^} to configure database $i"
+        echo >&2 "error: database.php setting $i was not given, set environment variable DB_${i^^} to configure it."
         exit 1
     fi
 done
 
 for i in ${!dbconfig[@]}; do
-    sed -i -e "s/^'${!dbconfig[$i]}' => '[.*]'$/^'${!dbconfig[$i]}' => '${dbconfig[$i]}'$/" /usr/local/share/codeigniter/application/config/database.php
+    sed -i "s/'"$i"' => '.*'/'"$i"' => '"${dbconfig[$i]}"'/" /usr/local/share/codeigniter/application/config/database.php
 done
 
 # From php:7.0-apache

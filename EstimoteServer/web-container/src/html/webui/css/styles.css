@@ -1,0 +1,54 @@
+#dataWrapper{
+	text-align:center;
+	font-size:28px;
+	
+	border:1px solid #000000;
+}
+.switchButton{
+	background-color:rgb(6, 120, 163);
+	width:20%;
+	height:10%;
+	margin:auto;
+	margin-top:20px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	transition:background-color 0.1s ease;
+}
+.switchButton:hover{
+	background-color:rgba(6, 120, 163, 0.3);
+}
+.switchButton:active{
+	border:1px solid rgb(6, 120, 163);
+	border-radius:0px;
+}
+.header{
+	font-size:32px;
+	text-align:center;
+}
+.header2{
+	font-size:24px;
+	text-align:center;
+}
+.beacondataWrapper{
+	background-color:rgb(6, 120, 163);
+	margin:auto;
+	margin-top:20px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	padding:20px;
+}
+.beacondataWrapper pre{
+	color:#e8ddcb;
+	font-size:18px;
+	font-family: 'Oswald', sans-serif;
+	text-decoration:none;
+	padding:10px;
+	margin:0;
+	white-space: pre-line;       /* Since CSS 2.1 */
+    white-space: -moz-pre-line;  /* Mozilla, since 1999 */
+    white-space: -pre-line;      /* Opera 4-6 */
+    white-space: -o-pre-line;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}

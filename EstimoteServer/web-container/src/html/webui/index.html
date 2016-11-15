@@ -1,0 +1,60 @@
+<html>
+<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<script src="../assets/ext/jquery.js"></script>
+		<script type="text/javascript">
+			var bg1 = "#FF0012"; //document.body.style.background
+			var bg2 = "#000000";
+			var dataurl = "php/data.php";
+			var refreshRate = 2000;
+			var datawrapperName = "#beacondataWrapper";
+			var player;
+			$(document).ready(function(){
+				setInterval(getData(), refreshRate);
+				player = document.getElementById('player');
+				var src = document.getElementById('audiosrc');
+				src.src = "audio/darude-sandstorm.mp3";
+				player.load();
+				player.addEventListener("load", function() {
+					alert("play");
+					player.play();
+				}, true);
+
+			});
+			function getData(){
+				$.ajax({
+					url:"php/data.php",
+					type: "GET",
+					dataType: "html",
+					success: function(html){
+						$(datawrapperName).html(html);
+					}
+				});
+			}
+			function playpause(){
+				if(player.paused){
+					player.play();
+					document.body.style.background = "#FFFFFF";
+				}else{
+					player.pause();
+					document.body.style.background = bg2;
+				}
+			}
+		</script>
+</head>
+<body>
+<h1 class="header">Estimote beacon project</h1>
+<h2 class="header2">Group 2<br/>Tatu Piippo, Jiska Parrila, Petri Virkkunen, Pauli Huttunen</h2>
+
+<div class="beacondataWrapper" id="beacondataWrapper">
+</div>
+<audio id="player" autoplay="autoplay">
+	<source id="audiosrc" type="audio/mp3"/>
+Your browser does not support the audio element.
+</audio>
+<div class="switchButton" onclick="playpause()">
+Play/Pause
+</div>
+</body>
+</html>
