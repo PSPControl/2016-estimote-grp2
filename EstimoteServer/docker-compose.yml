@@ -1,0 +1,14 @@
+version: "2"
+services:
+    es-web:
+        build:
+            context: ./web-container
+        image: grp2/es-web
+        depends_on:
+            - es-db
+
+    es-db:
+        build:
+            context: ./db-container
+        image: grp2/es-web
+        container_name: es-db
