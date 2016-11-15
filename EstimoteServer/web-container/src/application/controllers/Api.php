@@ -18,10 +18,38 @@ class Api extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
 	public function beacon ($id) {
-		$this->load->database();
-		$this->load->model ('asd_model');
-		$this->load->view('shit', [ 'asd' => $this->asd_model->hurr () ]);
+		$sql = "SELECT id, uuid FROM estimote_beacons";
+		$this->output->set_content_type ('application/json');
+		$this->load->database ();
+		if (($query = $this->db->query($sql)) !== false) {	
+			$this->output->set_output (json_encode ($query->result_array()));
+		} else {
+			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
+		}
+	}
+
+	public function beacons () {
+		$sql = "SELECT id, uuid FROM estimote_beacons";
+		$this->output->set_content_type ('application/json');
+		$this->load->database ();
+		if (($query = $this->db->query($sql)) !== false) {	
+			$this->output->set_output (json_encode ($query->result_array()));
+		} else {
+			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
+		}
+	}
+
+	public function closestbeacon () {
+		$sql = "SELECT id, uuid FROM estimote_beacons";
+		$this->output->set_content_type ('application/json');
+		$this->load->database ();
+		if (($query = $this->db->query($sql)) !== false) {	
+			$this->output->set_output (json_encode ($query->result_array()));
+		} else {
+			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
+		}
 	}
 
 	public function beaconvalues ($id, $temperature = null, $brightness = null, $pressure = null) {
@@ -44,13 +72,26 @@ class Api extends CI_Controller {
 	}
 
 	public function backgrounds () {
-		$sql = "SELECT id, name FROM estimote_backgrounds";
+		$sql = "SELECT id, name, path FROM estimote_backgrounds";
 		$this->output->set_content_type ('application/json');
 		$this->load->database ();
 		if (($query = $this->db->query($sql)) !== false) {	
-			$this->output->set_output (json_encode ($query->result_array()));
+			$this->output->set_output (json_encode ([ 'common'=> [ 'path' => '/assets/backgrounds' ], 'backgrounds' => $query->result_array() ]));
 		} else {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
