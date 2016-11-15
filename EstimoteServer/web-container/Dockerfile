@@ -40,8 +40,9 @@ RUN mkdir -p /usr/local/src/codeigniter \
 # Install EstimoteServer application
 COPY ./src/application /usr/local/share/codeigniter/application
 
-# Install webui
-COPY ./src/webui /var/www/html/webui
+# Install php files
+# TODO: integrate functionality of these files directly to the application API
+COPY ./src/php /var/www/html/php
 
 # Install assets
 COPY ./src/assets /var/www/html/assets
