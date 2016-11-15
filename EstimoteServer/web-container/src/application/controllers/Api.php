@@ -81,6 +81,20 @@ class Api extends CI_Controller {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
 		}
 	}
+
+	public function currentconfig () {
+		$this->output->set_output (json_encode ([
+			'song' => [
+				'artist' => 'Darude',
+				'name' => 'Sandstorm'
+			], 
+			'background' => [
+				'name' => 'jaa.jpg',
+				'path' => "/"
+			]
+		]));
+	}
+
 }
 
 
