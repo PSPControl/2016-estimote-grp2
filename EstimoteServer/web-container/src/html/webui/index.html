@@ -2,9 +2,9 @@
 <head>
 		<meta charset="UTF-8" />
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
-		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="../assets/ext/jquery.js"></script>
 		<script type="text/javascript">
-			var bg1 = "#FF0012"; //document.body.style.background 
+			var bg1 = "#FF0012"; //document.body.style.background
 			var bg2 = "#000000";
 			var dataurl = "php/data.php";
 			var refreshRate = 2000;
@@ -16,11 +16,11 @@
 				var src = document.getElementById('audiosrc');
 				src.src = "audio/darude-sandstorm.mp3";
 				player.load();
-				player.addEventListener("load", function() { 
+				player.addEventListener("load", function() {
 					alert("play");
-					player.play(); 
+					player.play();
 				}, true);
-				
+
 			});
 			function getData(){
 				$.ajax({
@@ -44,7 +44,7 @@
 		</script>
 </head>
 <body>
-<h1 class="header">Beacon project</h1>
+<h1 class="header">Estimote beacon project</h1>
 <h2 class="header2">Group 2<br/>Tatu Piippo, Jiska Parrila, Petri Virkkunen, Pauli Huttunen</h2>
 
 <div class="beacondataWrapper" id="beacondataWrapper">

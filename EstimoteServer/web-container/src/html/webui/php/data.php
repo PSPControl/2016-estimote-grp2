@@ -1,6 +1,6 @@
 <?php
 	/*
-		
+
 	*/
 	$temperature = "Temperature data goes here";
 	$pressure = "Pressure data goes here";
