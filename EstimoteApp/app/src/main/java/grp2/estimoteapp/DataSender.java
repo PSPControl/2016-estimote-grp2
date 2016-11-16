@@ -28,7 +28,6 @@ public class DataSender{
                 try {
                     // defaultHttpClient
                     DefaultHttpClient httpClient = new DefaultHttpClient();
-                    //HttpPost httpPost = new HttpPost(url);
                     HttpPost httpPost = new HttpPost(url);
 
                     HttpResponse httpResponse = httpClient.execute(httpPost);

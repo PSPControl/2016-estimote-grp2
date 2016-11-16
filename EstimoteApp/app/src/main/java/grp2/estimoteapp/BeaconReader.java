@@ -13,6 +13,7 @@ import com.estimote.sdk.telemetry.EstimoteTelemetry;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,7 @@ public class BeaconReader extends Activity {
     private String scanId;
     private String textToPrint = "";
     private String UUIDToSearch = "A9407F30-F5F8-466E-AFF9-25556B57FE6D";
+    private String[] ourBeaconIDs = new String[]{"8dcc20baffa8f925765d0f967a232f03","844cf7a1716f90a9aa6aad3ea4bf572d","359bdb94a0f2f3d0fdba03eff8002108",""};
 
     private ArrayList<BeaconTelemetries> beacons = new ArrayList<BeaconTelemetries>();
 
@@ -90,52 +92,61 @@ public class BeaconReader extends Activity {
 
     public void doSomethingWithTelemetries(DeviceId beaconId,double temperature, double brightness, double pressure,int distance){
         boolean newBeacon = true;
-
-        //Checks if the read telemetry data comes from a previously read beacon
-        if(beacons.size() > 0) {
-            for (int i = 0; i < beacons.size(); i++) {
-                DeviceId beaconId2 = beacons.get(i).beaconId;
-                if (beaconId.equals(beaconId2)) {
-                    newBeacon = false;
-                    beacons.get(i).temperature = temperature;
-                    beacons.get(i).brightness = brightness;
-                    beacons.get(i).pressure = pressure;
-                    beacons.get(i).distance = distance;
-                    break;
+        boolean ourBeacon = false;
+        //Checks that the beacon is one of our beacons
+        for(int i = 0; i < ourBeaconIDs.length;i++){
+            if(beaconId.toString().substring(1,33).equals(ourBeaconIDs[i])){
+                ourBeacon = true;
+            }
+        }
+        if(ourBeacon) {
+            //Checks if the read telemetry data comes from a previously read beacon
+            if (beacons.size() > 0) {
+                for (int i = 0; i < beacons.size(); i++) {
+                    DeviceId beaconId2 = beacons.get(i).beaconId;
+                    if (beaconId.equals(beaconId2)) {
+                        newBeacon = false;
+                        beacons.get(i).temperature = temperature;
+                        beacons.get(i).brightness = brightness;
+                        beacons.get(i).pressure = pressure;
+                        beacons.get(i).distance = distance;
+                        break;
+                    }
                 }
             }
-        }
 
-        //Creates a new beacon
-        if(newBeacon){
-            BeaconTelemetries b = new BeaconTelemetries(beaconId);
-            b.brightness = brightness;
-            b.pressure = pressure;
-            b.temperature = temperature;
-            b.distance = distance;
-            beacons.add(b);
-        }
-
-        //Prints all the saved beacons data
-        textToPrint = "";
-        for(int i = 0; i < beacons.size();i++){
-            textToPrint += "\n beaconID: " + beacons.get(i).beaconId +
-                    ", temperature: " + beacons.get(i).temperature + " °C" +
-                    ", light: " + beacons.get(i).brightness + " lux" +
-                    ", distance " + beacons.get(i).distance + ".";
-
-                /*dataSender.sendDataToUrl("http://jiska.picasson.fi/index.php/api/beaconvalues/beaconid=" + beacons.get(i).beaconId.toString() +
-                        "&temperature=" + beacons.get(i).temperature +
-                        "&brightness=" + beacons.get(i).brightness +
-                        "&pressure=" + beacons.get(i).pressure +
-                        "&distance=" + beacons.get(i).distance);*/
-
-        }
-        mainActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                mainActivity.telemetryText.setText(textToPrint);
+            //Creates a new beacon
+            if (newBeacon) {
+                BeaconTelemetries b = new BeaconTelemetries(beaconId);
+                b.brightness = brightness;
+                b.pressure = pressure;
+                b.temperature = temperature;
+                b.distance = distance;
+                beacons.add(b);
             }
-        });
+
+            //Sends data to the web
+            dataSender.sendDataToUrl("http://www.students.oamk.fi/~t3paji00/estimote/index.php/api/beaconvalues" +
+                    "/" + beaconId.toString().toString().substring(1, 33) +
+                    "/" + distance +
+                    "/" + temperature +
+                    "/" + brightness +
+                    "/" + pressure );
+
+            //Prints all the saved beacons data
+            textToPrint = "";
+            for (int i = 0; i < beacons.size(); i++) {
+                textToPrint += "\n beaconID: " + beacons.get(i).beaconId.toString().substring(1, 33) +
+                        ", temperature: " + beacons.get(i).temperature + " °C" +
+                        ", light: " + beacons.get(i).brightness + " lux" +
+                        ", distance " + beacons.get(i).distance + ".";
+            }
+            mainActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    mainActivity.telemetryText.setText(textToPrint);
+                }
+            });
+        }
     }
 
     @Override protected void onStart() {
