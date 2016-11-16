@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 </head>
 <body>
-	<audio id="player" autoplay="autoplay">
+	<audio id="player" autoplay="autoplay" preload="none">
 	Your browser does not support the audio element.
 	</audio>
 	<h1 class="header">Estimote beacon project</h1>
@@ -23,22 +23,31 @@
 			var dataurl = "php/data.php";
 			var refreshRate = 2000;
 			var datawrapperName = "#beacondataWrapper";
-			var player;
+			var current_song = null;
 			function getData(){
 				$.ajax({
 					url:"index.php/api/currentconfig",
 					type: "GET",
 					dataType: "JSON",
 					success: function(response){
-						console.log (response);
-						var audio = "assets/audio/";
+						if (response.error) {
+							return;
+						}
+						var audio = "assets/audio/"; 
 						var song = response ['song'];
-						var src = $ ('<source/>', {
-							id: "audiosrc",
-							type: "audio/mpeg",
-							src: audio + song.artist.toLowerCase () + '-' + song.name.toLowerCase () + '.mp3'
-						});
-						$ ('#player').empty ().append (src);
+						song = audio + song.artist.toLowerCase ().replace (/\W/g, '') + '-' + song.name.toLowerCase ().replace (/\W/g, '') + '.mp3';
+						// var src = $ ('<source/>', {
+							// id: "audiosrc",
+							// type: "audio/mpeg",
+							// src: song
+						// });
+						if (current_song !== song) {
+							var player = $ ('#player');
+							player.attr ('src', song);
+							// player [0].pause ();
+							// player.empty ().append (src);
+							current_song = song;
+						}
 					}
 				});
 			}
