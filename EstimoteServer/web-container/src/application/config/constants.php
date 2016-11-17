@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
-define ('WEBROOT_INDEX_PATH', '/estimote/index.php');
-define ('WEBROOT_ASSETS_PATH', '/estimote/assets');
+define ('WEBROOT_INDEX_PATH', '/index.php');
+define ('WEBROOT_ASSETS_PATH', '/assets');
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace
