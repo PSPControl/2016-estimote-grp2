@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-	<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/styles.css">
 </head>
 <body>
 	<audio id="player" autoplay="autoplay">
@@ -18,41 +18,71 @@
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script type="text/javascript">
-			var bg1 = "#FF0012"; //document.body.style.background
-			var bg2 = "#000000";
-			var dataurl = "php/data.php";
 			var refreshRate = 2000;
 			var datawrapperName = "#beacondataWrapper";
-			var player;
+			var player, backgroundPath;
+			//Data variables
+			var closestbeacon, dataArray, temp, pressure, signal_strength, brightness;´
 			function getData(){
 				$.ajax({
-					url:"index.php/api/currentconfig",
+					url:"http://www.students.oamk.fi/~t3paji00/estimote/index.php/api/currentconfig/",
 					type: "GET",
 					dataType: "JSON",
 					success: function(response){
 						console.log (response);
-						var audio = "assets/audio/";
+						var audio = "../../assets/audio/";
 						var song = response ['song'];
 						var src = $ ('<source/>', {
 							id: "audiosrc",
 							type: "audio/mpeg",
 							src: audio + song.artist.toLowerCase () + '-' + song.name.toLowerCase () + '.mp3'
 						});
+						var background = response['background'];
+						if(backgroundPath != (background.path + background.name)){
+							backgroundPath = "../../assets/backgrounds" + background.path + background.name;
+							$('body').css('background-image','url(' + backgroundPath + ')');
+						}
+						console.log(backgroundPath);
 						$ ('#player').empty ().append (src);
+						}
+				});
+				getMeasurementData();
+			}
+			function getMeasurementData(){
+				$.ajax({
+					url:"http://www.students.oamk.fi/~t3paji00/estimote/index.php/api/closestbeacon/",
+					type: "GET",
+					dataType: "JSON",
+					success:function(response){
+						console.log(jQuery.parseJSON(response));
+						closestbeacon = response['b.uuid'];
 					}
 				});
+				$.ajax({
+					url:"http://www.students.oamk.fi/~t3paji00/estimote/index.php/api/beacondata/",
+					type: "GET",
+					dataType: "JSON",
+					success:function(response){
+						console.log(jQuery.parseJSON(response));
+					dataArray = response[''];
+						jQuery.each(dataArray, function(index, value){
+							if(dataArray(index) === closestbeacon){
+								console.log("haba haba tsub tsub");
+							}
+						});
+					}
+				})
 			}
 			function playpause(){
 				var player = $ ('#player');
 				if (player.prop ('paused')){
 					player[0].play();
-					document.body.style.background = "#FFFFFF";
 				}else{
 					player[0].pause();
-					document.body.style.background = bg2;
 				}
 			}
 			$(document).ready(function(){
+				getData();
 				$ ('.switchButton').on ('click', playpause);
 				setInterval(getData, refreshRate);
 			});
