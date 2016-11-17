@@ -2,18 +2,14 @@ package grp2.estimoteapp;
 
 import android.app.Activity;
 import android.content.Context;
-import android.provider.ContactsContract;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.DeviceId;
 import com.estimote.sdk.Region;
-import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.telemetry.EstimoteTelemetry;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +26,7 @@ public class BeaconReader extends Activity {
     private String scanId;
     private String textToPrint = "";
     private String UUIDToSearch = "A9407F30-F5F8-466E-AFF9-25556B57FE6D";
-    private String[] ourBeaconIDs = new String[]{"8dcc20baffa8f925765d0f967a232f03","844cf7a1716f90a9aa6aad3ea4bf572d","359bdb94a0f2f3d0fdba03eff8002108",""};
+    private String[] ourBeaconIDs = new String[]{"8dcc20baffa8f925765d0f967a232f03","844cf7a1716f90a9aa6aad3ea4bf572d","359bdb94a0f2f3d0fdba03eff8002108"};
 
     private ArrayList<BeaconTelemetries> beacons = new ArrayList<BeaconTelemetries>();
 
