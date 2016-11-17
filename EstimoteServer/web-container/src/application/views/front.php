@@ -20,9 +20,17 @@
 		<script type="text/javascript">
 			var refreshRate = 2000;
 			var datawrapperName = "#beacondataWrapper";
-			var player, backgroundPath;
+			var player, backgroundPath, dataHTMLContent;
 			//Data variables
-			var closestbeacon, dataArray, temp, pressure, signal_strength, brightness;´
+			var closestbeacon, dataArray, temp, pressure, signal_strength, brightness;
+			function printData(){
+				dataHTMLContent = "Beacon: " + closestbeacon;
+				dataHTMLContent += "\nTemperature: " + temp;
+				dataHTMLContent += "\nSignal strength: " + signal_strength;
+				dataHTMLContent += "\nBrightness: " + brightness;
+				
+				$(datawrapperName).html(dataHTMLContent);
+			}
 			function getData(){
 				$.ajax({
 					url:"http://www.students.oamk.fi/~t3paji00/estimote/index.php/api/currentconfig/",
@@ -56,6 +64,7 @@
 					success:function(response){
 						console.log(jQuery.parseJSON(response));
 						closestbeacon = response['b.uuid'];
+						closestbeacon = closestbeacon.uuid;
 					}
 				});
 				$.ajax({
@@ -66,12 +75,16 @@
 						console.log(jQuery.parseJSON(response));
 					dataArray = response[''];
 						jQuery.each(dataArray, function(index, value){
-							if(dataArray(index) === closestbeacon){
-								console.log("haba haba tsub tsub");
+							if(dataArray(index).beacon == closestbeacon){
+								temp = dataArray(index).temperature;
+								pressure = dataArray(index).pressure;
+								signal_strength = dataArray(index).signal_strength;
+								brightness = dataArray(index).brigthness;
 							}
 						});
 					}
 				})
+				printData();
 			}
 			function playpause(){
 				var player = $ ('#player');
