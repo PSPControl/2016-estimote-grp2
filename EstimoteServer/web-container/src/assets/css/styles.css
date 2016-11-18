@@ -4,10 +4,6 @@
 	
 	border:1px solid #000000;
 }
-body{
-	background-repeat:no-repeat;	
-	background-size:cover;
-}
 .switchButton{
 	background-color:rgb(6, 120, 163);
 	width:20%;
@@ -18,11 +14,6 @@ body{
 	align-items:center;
 	justify-content:center;
 	transition:background-color 0.1s ease;
-	
-	-webkit-user-select: none;  /* Chrome all / Safari all */
-	-moz-user-select: none;     /* Firefox all */
-	-ms-user-select: none;      /* IE 10+ */
-	cursor:pointer;
 }
 .switchButton:hover{
 	background-color:rgba(6, 120, 163, 0.3);

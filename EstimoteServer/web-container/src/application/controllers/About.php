@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Front extends CI_Controller {
+class About extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,12 +20,8 @@ class Front extends CI_Controller {
 	 */
 	public function index()
 	{
-		$script = @file_get_contents (APPPATH.'views'.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'front.js');
-		if (!$script) {
-			$script = '';
-		}
 		$this->load->view('header');
-		$this->load->view('front');
-		$this->load->view('footer', [ 'script' => $script ]);
+		$this->load->view('about');
+		$this->load->view('footer');
 	}
 }

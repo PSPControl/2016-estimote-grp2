@@ -43,27 +43,13 @@ class Api extends CI_Controller {
 	}
 
 	public function closestbeacon () {
-		$sql = "SELECT b.uuid FROM estimote_beacons AS b JOIN estimote_measurement_data AS d ON d.beacon = b.uuid WHERE price = (SELECT MIN(signal_strength) FROM estimote_measurement_data)";
+		$sql = "SELECT b.uuid FROM estimote_beacons AS b JOIN estimote_measurement_data AS d ON d.beacon = b.uuid WHERE signal_strength = (SELECT MIN(signal_strength) FROM estimote_measurement_data)";
 		$this->output->set_content_type ('application/json');
 		$this->load->database ();
 		if (($query = $this->db->query ($sql)) !== false) {	
 			$this->output->set_output (json_encode ($query->result_array ()));
 		} else {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
-		}
-	}
-	public function beacondata(){
-		$sql = "SELECT beacon, timestamp, signal_strength, temperature, pressure, brigthness 
-			FROM estimote_measurement_data 
-			WHERE timestamp = (SELECT MAX(timestamp) 
-			FROM estimote_measurement_data) GROUP BY beacon";
-			
-		$this->output->set_content_type('application/json');
-		$this->load->database();
-		if(($query = $this->db->query($sql)) !== false){
-			$this->output->set_output(json_encode ($query->result_array(())));
-		}else{
-			$this->output->set_output(json_encode(["Error:" => "beaconvalues error"]));
 		}
 	}
 
@@ -84,13 +70,22 @@ class Api extends CI_Controller {
 		}
 	}
 
-	public function beaconconfig ($id = 0, $song = 0, $background = 0) {
+	public function beaconconfig () {
+		$id = $this->input->post ('beacon');
+		$song = $this->input->post ('song');
+		$background = $this->input->post ('background');
+		/*
+		<input type="hidden" name="beacon"/>
+		<select style="visibility: hidden;" name="song"></select>
+		<select style="visibility: hidden;" name="background"></select>
+		<input style="visibility: hidden;" type="submit">
+		*/
 		if (!$this->beaconExists ($id) || !$this->songExists ($song) || !$this->backgroundExists ($background)) {
 			return;
 		}
-		$sql = "INSERT INTO estimote_beacon_conf (beacon, song, background) VALUES (?, ?, ?)";
+		$sql = "INSERT INTO estimote_beacon_conf (beacon, song, background) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE song = VALUES(song), background = VALUES(background)";
 		$params = [];
-		$args = func_get_args ();
+		$args = [ $id, $song, $background ];
 		for ($i = 0; $i < 3; ++$i) {
 			if (isset ($args [$i]) && !empty ($args [$i])) {
 				$params [] = $this->db->escape_str ($args [$i]);
@@ -142,6 +137,17 @@ class Api extends CI_Controller {
 		}
 	}
 
+	public function beacondata ($id) {
+		$sql = "SELECT * FROM estimote_measurement_data WHERE timestamp = (SELECT MAX(timestamp) FROM estimote_measurement_data) GROUP BY beacon";
+		$this->output->set_content_type ('application/json');
+		$this->load->database ();
+		if (($query = $this->db->query ($sql)) !== false) {
+			$this->output->set_output (json_encode ($query->result_array ()));
+		} else {
+			$this->output->set_output (json_encode ([ "Error:" => "beaconvalues error" ]));
+		}
+	}
+
 	private function beaconExists ($id) {
 		$sql = "SELECT COUNT(*) AS bc FROM estimote_beacons WHERE uuid LIKE ?";
 		$this->load->database ();
@@ -174,3 +180,13 @@ class Api extends CI_Controller {
 		} return [ 'name' => '', 'path' => '' ];
 	}
 }
+
+
+
+
+
+
+
+
+
+
