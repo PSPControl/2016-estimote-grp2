@@ -1,5 +1,6 @@
 # EstimoteServer web API
 Part of an url wrapped in {} stands for variable. Inside {} variable name and its type are separated with :.
+	
 If a url variable declared with {} is wrapped in [] it is optional. No optional parameter can be excluded
 if a latter parameter is wished to be defined.
 
