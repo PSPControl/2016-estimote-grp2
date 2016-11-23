@@ -4,6 +4,9 @@ MAINTAINER Pauli Huttunen <pauli.k.huttunen@gmail.com>
 
 # EstimoteServer frontend container
 
+# Install needed PHP extensions
+RUN docker-php-ext-install pdo_mysql mysqli
+
 # Install CodeIgniter
 ARG CI_VERSION="3.1.2"
 
