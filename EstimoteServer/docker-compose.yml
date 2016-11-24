@@ -1,0 +1,27 @@
+version: "2"
+services:
+    es-web-dev:
+        build:
+            context: ./web-container
+        image: grp2/es-web-dev
+        container_name: es-web-dev
+        ports:
+            - "80:80"
+        environment:
+            DB_HOSTNAME: es-db-dev
+            DB_USERNAME: estimotedevuser
+            DB_PASSWORD: estimotedevpasswd
+            DB_DATABASE: estimote
+        depends_on:
+            - es-db-dev
+
+    es-db-dev:
+        build:
+            context: ./db-container
+        image: grp2/es-db-dev
+        container_name: es-db-dev
+        environment:
+            MYSQL_ROOT_PASSWORD: rootdevpasswd
+            MYSQL_DATABASE: estimote
+            MYSQL_USER: estimotedevuser
+            MYSQL_PASSWORD: estimotedevpasswd

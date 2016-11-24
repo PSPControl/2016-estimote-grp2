@@ -24,7 +24,7 @@ class Api extends CI_Controller {
 			$sql = "SELECT song, background FROM estimote_beacon_conf WHERE beacon = ?";
 			$this->output->set_content_type ('application/json');
 			$this->load->database ();
-			if (($query = $this->db->query($sql, [ $this->db->escape_str ($id) ])) !== false && $query->row ()) {	
+			if (($query = $this->db->query($sql, [ $this->db->escape_str ($id) ])) !== false && $query->row ()) {
 				$this->output->set_output (json_encode ((array)$query->row ()));
 				return;
 			}
@@ -35,7 +35,7 @@ class Api extends CI_Controller {
 		$sql = "SELECT uuid, name FROM estimote_beacons";
 		$this->output->set_content_type ('application/json');
 		$this->load->database ();
-		if (($query = $this->db->query($sql)) !== false) {	
+		if (($query = $this->db->query($sql)) !== false) {
 			$this->output->set_output (json_encode ($query->result_array ()));
 		} else {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
@@ -46,7 +46,7 @@ class Api extends CI_Controller {
 		$sql = "SELECT b.uuid FROM estimote_beacons AS b JOIN estimote_measurement_data AS d ON d.beacon = b.uuid WHERE signal_strength = (SELECT MIN(signal_strength) FROM estimote_measurement_data)";
 		$this->output->set_content_type ('application/json');
 		$this->load->database ();
-		if (($query = $this->db->query ($sql)) !== false) {	
+		if (($query = $this->db->query ($sql)) !== false) {
 			$this->output->set_output (json_encode ($query->result_array ()));
 		} else {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
@@ -100,7 +100,7 @@ class Api extends CI_Controller {
 		$sql = "SELECT id, name, artist FROM estimote_songs";
 		$this->output->set_content_type ('application/json');
 		$this->load->database ();
-		if (($query = $this->db->query($sql)) !== false) {	
+		if (($query = $this->db->query($sql)) !== false) {
 			$this->output->set_output (json_encode ($query->result_array()));
 		} else {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
@@ -111,7 +111,7 @@ class Api extends CI_Controller {
 		$sql = "SELECT id, name, path FROM estimote_backgrounds";
 		$this->output->set_content_type ('application/json');
 		$this->load->database ();
-		if (($query = $this->db->query ($sql)) !== false) {	
+		if (($query = $this->db->query ($sql)) !== false) {
 			$this->output->set_output (json_encode ([ 'common'=> [ 'path' => '/assets/backgrounds' ], 'backgrounds' => $query->result_array() ]));
 		} else {
 			$this->output->set_output (json_encode ([ 'error' => 'No workie.' ]));
@@ -180,13 +180,3 @@ class Api extends CI_Controller {
 		} return [ 'name' => '', 'path' => '' ];
 	}
 }
-
-
-
-
-
-
-
-
-
-
