@@ -122,7 +122,7 @@ public class BeaconReader extends Activity {
             }
 
             //Sends data to the web
-            dataSender.sendDataToUrl("http://www.students.oamk.fi/~t3paji00/estimote/index.php/api/beaconvalues" +
+            dataSender.sendDataToUrl(Config.Api.URL_BEACONVALUES +
                     "/" + beaconId.toString().toString().substring(1, 33) +
                     "/" + distance +
                     "/" + temperature +
